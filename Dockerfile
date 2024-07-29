@@ -1,17 +1,22 @@
 # Use the official Drupal image as the base image
 FROM drupal:10
 
+# Install necessary packages
+RUN apt-get update && \
+    apt-get install -y git unzip && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # Set the working directory
 WORKDIR /var/www/html
 
-# Copy the custom Drupal files into the container
-COPY drupal/ .
+# Clone the custom Drupal files into the container
+RUN git clone https://github.com/mesfint/drupal-docker.git drupal
+
+# Move the cloned files to the appropriate directory
+RUN mv drupal/* . && rm -rf drupal
 
 # Install Composer dependencies
-RUN apt-get update && \
-    apt-get install -y git unzip && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    composer install
+RUN composer install
 
 # Set the appropriate permissions
 RUN chown -R www-data:www-data /var/www/html && \
