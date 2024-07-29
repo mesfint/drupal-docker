@@ -10,3 +10,14 @@
 /web/sites/*/settings.local.php
 # Ignore Drupal's file directory
 /web/sites/*/files/
+
+
+
+# Ignore directories
+/web/sites/default/files/
+.ddev/.importdb
+.ddev/.downloads
+/web/sites/default/settings.php
+
+# Do not ignore config sync
+!config/sync/
